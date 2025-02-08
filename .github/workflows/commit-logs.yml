@@ -39,5 +39,5 @@ jobs:
           git add logs.logs
           git commit -m "📜 Update logs.logs with new commits" || echo "No changes to commit"
           
-          git push https://x-access-token:${{ secrets.PAT_PERSONAL}}@github.com/${{ github.repository }}.git
+          git push
 
