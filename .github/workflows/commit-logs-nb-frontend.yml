@@ -1,9 +1,9 @@
-name: Commit Logs Automation
+name: Commit Logs Automation (NexusBridge Frontend)
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # Runs daily at midnight UTC
-  workflow_dispatch:  # Allows manual triggering
+    - cron: '0 12-14 * * 1-7'  # Runs at 8pm every day
+  workflow_dispatch:
 
 permissions: 
   contents: write  
@@ -27,9 +27,10 @@ jobs:
       - name: Run commit fetcher
         env:
           PAT_WORK: ${{ secrets.PAT_WORK }}
-          REPO_OWNER: ${{ secrets.REPO_OWNER }}
-          REPO_NAME: ${{ secrets.REPO_NAME }}
           AUTHOR_NAME: ${{ secrets.AUTHOR_NAME }}
           GIT_USER: ${{ secrets.GIT_USER }}
           GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+
+          REPO_OWNER: ${{ secrets.REPO_OWNER_FRONTEND }} #this is customizable
+          REPO_NAME: ${{ secrets.REPO_NAME_FRONTEND }} #this is customizable
         run: python main.py

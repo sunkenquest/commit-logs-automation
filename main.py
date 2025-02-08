@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 load_dotenv()
 
 PHT = pytz.timezone("Asia/Manila")
-since_date_utc = (datetime.utcnow() - timedelta(days=7)).replace(tzinfo=pytz.utc).astimezone(PHT)
+since_date_utc = (datetime.utcnow() - timedelta(hours=24)).replace(tzinfo=pytz.utc).astimezone(PHT)
 since_date = since_date_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
 BASE_URL = f"https://api.github.com/repos/{os.getenv('REPO_OWNER')}/{os.getenv('REPO_NAME')}"
 
@@ -58,7 +58,7 @@ def filter_commits_by_author(commits: List[Dict[str, Any]], author_name: str) ->
     ]
 
 def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
-    """Writes commit details to a log file and commits each entry separately."""
+    """Writes commit details to a log file and commits each new entry separately."""
 
     git_user = os.getenv("GIT_USER", "github-actions[bot]")
     git_email = os.getenv("GIT_EMAIL", "github-actions[bot]@users.noreply.github.com")
@@ -66,9 +66,21 @@ def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
     subprocess.run(["git", "config", "--global", "user.name", git_user], check=True)
     subprocess.run(["git", "config", "--global", "user.email", git_email], check=True)
 
+    if os.path.exists(log_file):
+        with open(log_file, "r") as file:
+            existing_logs = file.read()
+    else:
+        existing_logs = ""
+
+    new_commits = []
+
     for commit in commits:
-        project = os.getenv('REPO_NAME')
         sha = commit.get("sha", "N/A")
+
+        if sha in existing_logs:
+            continue
+
+        project = os.getenv('REPO_NAME')
         message = commit.get("commit", {}).get("message", "No message")
         author_info = commit.get("commit", {}).get("author", {})
         date = author_info.get("date", "Unknown")
@@ -79,13 +91,21 @@ def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
             f"Date: {date}\nMessage: {message}\n{'-' * 50}\n\n"
         )
 
-        with open(log_file, "a") as file:
+        new_commits.append((sha, log_entry, message))
+
+    if not new_commits:
+        print("No new commits to log.")
+        return
+
+    with open(log_file, "a") as file:
+        for _, log_entry, _ in new_commits:
             file.write(log_entry)
 
+    for sha, _, message in new_commits:
         commit_message = f"📜 Log commit {sha[:7]} - {message.splitlines()[0]}"
         subprocess.run(["git", "add", log_file], check=True)
         subprocess.run(["git", "commit", "-m", commit_message], check=True)
-    
+
     subprocess.run(["git", "push"], check=True)
 
 def main():

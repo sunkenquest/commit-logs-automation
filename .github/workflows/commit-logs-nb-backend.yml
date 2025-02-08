@@ -1,0 +1,36 @@
+name: Commit Logs Automation (NexusBridge Backend)
+
+on:
+  schedule:
+    - cron: '0 12-14 * * 1-7'  # Runs at 8pm every day
+  workflow_dispatch:
+
+permissions: 
+  contents: write  
+
+jobs:
+  commit_logs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run commit fetcher
+        env:
+          PAT_WORK: ${{ secrets.PAT_WORK }}
+          AUTHOR_NAME: ${{ secrets.AUTHOR_NAME }}
+          GIT_USER: ${{ secrets.GIT_USER }}
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+
+          REPO_OWNER: ${{ secrets.REPO_OWNER_BACKEND }} #this is customizable
+          REPO_NAME: ${{ secrets.REPO_NAME_BACKEND }} #this is customizable
+        run: python main.py
