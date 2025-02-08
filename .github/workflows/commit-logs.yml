@@ -6,7 +6,7 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  commit-logs:
+  commit_logs:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,7 +29,7 @@ jobs:
           AUTHOR_NAME: ${{ secrets.AUTHOR_NAME }}
         run: python main.py
 
-     - name: Commit and push logs
+      - name: Commit and push logs
         env:
           PAT_PERSONAL: ${{ secrets.PAT_PERSONAL }}
         run: |
