@@ -17,7 +17,7 @@ def get_headers() -> Dict[str, str]:
     """Returns the required headers for GitHub API authentication."""
     return {
         "Accept": "application/vnd.github.v3+json",
-        "Authorization": f"Bearer {os.getenv('GITHUB_PAT_WORK')}",
+        "Authorization": f"Bearer {os.getenv('PAT_WORK')}",
     }
 
 
