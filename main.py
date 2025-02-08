@@ -1,4 +1,5 @@
 import os
+import subprocess
 from dotenv import load_dotenv
 import pytz
 import requests
@@ -57,22 +58,30 @@ def filter_commits_by_author(commits: List[Dict[str, Any]], author_name: str) ->
     ]
 
 def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
-    """Writes commit details to a log file."""
-    with open(log_file, "a") as file:
-        for commit in commits:
-            project = os.getenv('REPO_NAME')
-            sha = commit.get("sha", "N/A")
-            message = commit.get("commit", {}).get("message", "No message")
-            author_info = commit.get("commit", {}).get("author", {})
-            date = author_info.get("date", "Unknown")
-            branch = commit["branch"]
+    """Writes commit details to a log file and commits each entry separately."""
+    
+    for commit in commits:
+        project = os.getenv('REPO_NAME')
+        sha = commit.get("sha", "N/A")
+        message = commit.get("commit", {}).get("message", "No message")
+        author_info = commit.get("commit", {}).get("author", {})
+        date = author_info.get("date", "Unknown")
+        branch = commit["branch"]
 
-            log_entry = (
-                f"Project: {project}\nBranch: {branch}\nSHA: {sha}\n"
-                f"Date: {date}\nMessage: {message}\n{'-' * 50}\n\n"
-            )
+        log_entry = (
+            f"Project: {project}\nBranch: {branch}\nSHA: {sha}\n"
+            f"Date: {date}\nMessage: {message}\n{'-' * 50}\n\n"
+        )
 
+        with open(log_file, "a") as file:
             file.write(log_entry)
+
+        commit_message = f"📜 Log commit {sha[:7]} - {message.splitlines()[0]}"
+        subprocess.run(["git", "add", log_file], check=True)
+        subprocess.run(["git", "commit", "-m", commit_message], check=True)
+    
+    subprocess.run(["git", "push"], check=True)
+
 
 def main():
     """Main function to fetch and display commits from all branches by the specified author."""
