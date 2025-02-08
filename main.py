@@ -23,17 +23,16 @@ def get_headers() -> Dict[str, str]:
 
 
 def fetch_branches() -> List[str]:
-    """Fetches all branches in the repository."""
-    url = f"{BASE_URL}/branches"
+    """Fetches only the 'develop' branch in the repository."""
+    url = f"{BASE_URL}/branches/develop"
     response = requests.get(url, headers=get_headers())
 
     if response.status_code == 200:
-        return [branch["name"] for branch in response.json()]
+        return ["develop"]
     else:
-        print(f"Failed to fetch branches: {response.status_code}")
+        print(f"Failed to fetch 'develop' branch: {response.status_code}")
         print(response.json())
         return []
-
 
 def fetch_commits(branch: str) -> List[Dict[str, Any]]:
     """Fetches commits from a specific branch in the past 7 days."""
@@ -105,7 +104,7 @@ def main():
             all_author_commits.append(commit)
 
     if not all_author_commits:
-        print(f"No commits found by {os.getenv('AUTHOR_NAME')} in the last 7 days across all branches.")
+        print(f"No commits found by {os.getenv('AUTHOR_NAME')} in the last 24 hours.")
         return
 
     write_to_log(all_author_commits)
