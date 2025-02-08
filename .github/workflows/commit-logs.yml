@@ -34,7 +34,7 @@ jobs:
           PAT_PERSONAL: ${{ secrets.PAT_PERSONAL }}
         run: |
           git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}.github.com"
+          git config --global user.email "${{ github.actor }}@gmail.com"
           
           git add logs.logs
           git commit -m "📜 Update logs.logs with new commits" || echo "No changes to commit"
