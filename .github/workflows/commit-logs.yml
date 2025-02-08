@@ -6,7 +6,7 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  commit_logs:
+  commit-logs:
     runs-on: ubuntu-latest
 
     steps:
