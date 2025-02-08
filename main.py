@@ -59,7 +59,13 @@ def filter_commits_by_author(commits: List[Dict[str, Any]], author_name: str) ->
 
 def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
     """Writes commit details to a log file and commits each entry separately."""
+
+    git_user = os.getenv("GIT_USER", "github-actions[bot]")
+    git_email = os.getenv("GIT_EMAIL", "github-actions[bot]@users.noreply.github.com")
     
+    subprocess.run(["git", "config", "--global", "user.name", git_user], check=True)
+    subprocess.run(["git", "config", "--global", "user.email", git_email], check=True)
+
     for commit in commits:
         project = os.getenv('REPO_NAME')
         sha = commit.get("sha", "N/A")
@@ -81,7 +87,6 @@ def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
         subprocess.run(["git", "commit", "-m", commit_message], check=True)
     
     subprocess.run(["git", "push"], check=True)
-
 
 def main():
     """Main function to fetch and display commits from all branches by the specified author."""
