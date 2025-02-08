@@ -2,11 +2,11 @@ name: Commit Logs Automation (NexusBridge Frontend)
 
 on:
   schedule:
-    - cron: '0 12-14 * * 1-7'  # Runs at 8pm every day
+    - cron: "0 12-14 * * 1-7" # Runs at 8pm every day
   workflow_dispatch:
 
-permissions: 
-  contents: write  
+permissions:
+  contents: write
 
 jobs:
   commit_logs:
