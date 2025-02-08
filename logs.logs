@@ -45,3 +45,10 @@ Message: fix: docker and local fix (#1)
 * fix: add new lines
 --------------------------------------------------
 
+Project: nexusbridge-backend
+Branch: feature/lde
+SHA: 488dc4e29249a58acbda15b96e7a879e0b88bddc
+Date: 2025-02-05T01:23:56Z
+Message: :tada: backend base project
+--------------------------------------------------
+
