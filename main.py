@@ -66,6 +66,9 @@ def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
     subprocess.run(["git", "config", "--global", "user.name", git_user], check=True)
     subprocess.run(["git", "config", "--global", "user.email", git_email], check=True)
 
+    # Ensure the latest changes are pulled
+    subprocess.run(["git", "pull", "--rebase"], check=True)
+
     if os.path.exists(log_file):
         with open(log_file, "r") as file:
             existing_logs = file.read()
@@ -78,7 +81,7 @@ def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
         sha = commit.get("sha", "N/A")
 
         if sha in existing_logs:
-            continue
+            continue  # Skip duplicate commits
 
         project = os.getenv('REPO_NAME')
         message = commit.get("commit", {}).get("message", "No message")
@@ -101,13 +104,20 @@ def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
         for _, log_entry, _ in new_commits:
             file.write(log_entry)
 
+    subprocess.run(["git", "add", log_file], check=True)
+
+    status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
+    if not status_result.stdout.strip():
+        print("No changes detected. Skipping commit.")
+        return
+
     for sha, _, message in new_commits:
         commit_message = f"📜 Log commit {sha[:7]} - {message.splitlines()[0]}"
-        subprocess.run(["git", "add", log_file], check=True)
         subprocess.run(["git", "commit", "-m", commit_message], check=True)
 
-    subprocess.run(["git", "push"], check=True)
 
+    subprocess.run(["git", "push"], check=True)
+    
 def main():
     """Main function to fetch and display commits from all branches by the specified author."""
     branches = fetch_branches()
@@ -119,6 +129,7 @@ def main():
     for branch in branches:
         commits = fetch_commits(branch)
         author_commits = filter_commits_by_author(commits, os.getenv('AUTHOR_NAME'))
+        print(author_commits)
         for commit in author_commits:
             commit["branch"] = branch
             all_author_commits.append(commit)
