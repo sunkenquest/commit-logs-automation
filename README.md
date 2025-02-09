@@ -15,4 +15,4 @@ This is a commit logs fetcher that retrieves commit messages made by you but com
 4. Done! The automation will handle the rest.
 
 ## Project Breakdown
-![project breakdown](image.png)
+![project breakdown](commit-logs.jpg)
