@@ -30,6 +30,7 @@ jobs:
           AUTHOR_NAME: ${{ secrets.AUTHOR_NAME }}
           GIT_USER: ${{ secrets.GIT_USER }}
           GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+          HOURS: ${{ secrets.HOURS }}
 
           REPO_OWNER: ${{ secrets.REPO_OWNER_BACKEND }} #this is customizable
           REPO_NAME: ${{ secrets.REPO_NAME_BACKEND }} #this is customizable
