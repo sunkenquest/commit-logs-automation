@@ -32,3 +32,16 @@ Date: 2025-02-05T07:13:11Z
 Message: fix: port to 8080 (#2)
 --------------------------------------------------
 
+Project: nexusbridge-backend
+Branch: feature/lde
+SHA: 80e77701f67fac4b7cbcd75607aa7fde85054403
+Date: 2025-02-05T06:35:26Z
+Message: fix: docker and local fix (#1)
+
+* :whale: fix: docker and local fix
+
+* chore: rename docs
+
+* fix: add new lines
+--------------------------------------------------
+
