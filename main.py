@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 load_dotenv()
 
 PHT = pytz.timezone("Asia/Manila")
-since_date_utc = (datetime.utcnow() - timedelta(hours=os.getenv('HOURS'))).replace(tzinfo=pytz.utc).astimezone(PHT)
+since_date_utc = (datetime.utcnow() - timedelta(hours=int(os.getenv('HOURS', 24)))).replace(tzinfo=pytz.utc).astimezone(PHT)
 since_date = since_date_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
 BASE_URL = f"https://api.github.com/repos/{os.getenv('REPO_OWNER')}/{os.getenv('REPO_NAME')}"
 
