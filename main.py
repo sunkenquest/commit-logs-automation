@@ -118,8 +118,9 @@ def main():
     all_author_commits = []
     for branch in branches:
         commits = fetch_commits(branch)
+        print(commits)
         author_commits = filter_commits_by_author(commits, os.getenv('AUTHOR_NAME'))
-
+        print(author_commits)
         for commit in author_commits:
             commit["branch"] = branch
             all_author_commits.append(commit)
