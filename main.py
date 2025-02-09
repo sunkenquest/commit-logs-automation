@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 load_dotenv()
 
 PHT = pytz.timezone("Asia/Manila")
-since_date_utc = (datetime.utcnow() - timedelta(days=7)).replace(tzinfo=pytz.utc).astimezone(PHT)
+since_date_utc = (datetime.utcnow() - timedelta(hours=os.getenv('HOURS'))).replace(tzinfo=pytz.utc).astimezone(PHT)
 since_date = since_date_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
 BASE_URL = f"https://api.github.com/repos/{os.getenv('REPO_OWNER')}/{os.getenv('REPO_NAME')}"
 
@@ -57,7 +57,7 @@ def filter_commits_by_author(commits: List[Dict[str, Any]], author_name: str) ->
         if commit.get("commit", {}).get("author", {}).get("name") == author_name
     ]
 
-def write_to_log(commits: List[Dict[str, Any]], log_file: str = "logs.logs"):
+def write_to_log(commits: List[Dict[str, Any]], log_file: str = "project-commits.logs"):
     """Writes commit details to a log file and commits each entry separately."""
 
     git_user = os.getenv("GIT_USER", "github-actions[bot]")
@@ -110,6 +110,6 @@ def main():
 
     write_to_log(all_author_commits)
 
-    print(f"✅ {len(all_author_commits)} commits written to logs.logs.")
+    print(f"✅ {len(all_author_commits)} commits written to project-commits.logs.")
 if __name__ == "__main__":
     main()
