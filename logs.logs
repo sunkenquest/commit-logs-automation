@@ -135,3 +135,12 @@ Date: 2025-02-06T09:56:11Z
 Message: feat: ui get listing in location hub
 --------------------------------------------------
 
+Project: nexusbridge-frontend
+Branch: soriano/feat/location-hub-listings
+SHA: c8d14dffaa30867e4555a22610200f2881128596
+Date: 2025-02-07T08:49:14Z
+Message: Merge pull request #7 from dev-lrtechs/jasareo/fe-basic-profile
+
+feat: basic profile for a business listing
+--------------------------------------------------
+
