@@ -239,3 +239,23 @@ Date: 2025-02-07T10:03:42Z
 Message: feat: add chevron bttns
 --------------------------------------------------
 
+Project: nexusbridge-frontend
+Branch: soriano/feat-modal-and-locationhub
+SHA: 5e03d02e4dd9fe4950b7e7ba7f533328b98fd7e6
+Date: 2025-02-10T02:53:20Z
+Message: feat: add chevron bttns (#10)
+
+* feat: add chevron bttns
+
+* adding business page and react-icon
+
+* feat: add chevron bttns
+
+* Fixed routing issue -Emman
+
+---------
+
+Co-authored-by: ArvelFrancisco <arvel@bpoc.co.jp>
+Co-authored-by: dev-emmanuel-lr <dev_emmanuel@lrtechs.co.jp>
+--------------------------------------------------
+
